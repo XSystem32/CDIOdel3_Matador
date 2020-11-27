@@ -47,5 +47,75 @@ public class GameBoard {
 
         return fieldsDesign;
     }
+    public GUI_Car vehicleChoice(int playerId) {
+        String vehicle = gui.getUserSelection("Vælg din transport", "Bil", "Traktor", "UFO");
+        Color color = getVehicleColor(playerId);
+        if (vehicle.equals("Bil")) {
+            return new GUI_Car(color, color, GUI_Car.Type.CAR, GUI_Car.Pattern.ZEBRA);
+        } else if (vehicle.equals("Traktor")) {
+            return new GUI_Car(color, color, GUI_Car.Type.TRACTOR, GUI_Car.Pattern.FILL);
+        } else if (vehicle.equals("UFO")) {
+            return new GUI_Car(color, color, GUI_Car.Type.UFO, GUI_Car.Pattern.FILL);
+        }
+        return new GUI_Car(color, color, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL);
+    }
+
+    public Color getVehicleColor(int playerId) {
+        switch (playerId) {
+            case 1:
+                return Color.RED;
+            case 2:
+                return Color.GREEN;
+            case 3:
+                return Color.YELLOW;
+            default:
+                return Color.BLUE;
+        }
+    }
+
+    public void setupPlayers() {
+        int number;
+        String playerName;
+        number=  Integer.parseInt(requestNumberOfPlayers());
+        int balance=24 - 2 * number;
+
+        players = new Player[number];
+
+        for (int i = 0; i < number; i++) {
+
+            playerName = messageToPlayer("Spiller " + (i + 1) + ", indtast dit navn");
+            if (playerName.equals("")) {
+                playerName = "Spiller" + (i + 1);
+            }
+
+            players[i] = new Player(i, playerName, balance);
+            addUIPlayer(players[i], number);
+        }
+    }
+
+    public String requestNumberOfPlayers() {
+        return  gui.getUserSelection("Hvor mange spillere skal der være?", "2", "3","4");
+    }
+
+    public String messageToPlayer(String message) {
+        return gui.getUserString(message);
+    }
+
+    public void addUIPlayer(Player player, int amountOfPlayers) {
+        if (guiPlayers == null) {
+            guiPlayers = new GUI_Player[amountOfPlayers];
+        }
+        guiPlayers[player.getPlayerId()] = new GUI_Player(player.getName(), player.getBalance().getAmount(), vehicleChoice(player.getPlayerId()));
+        gui.addPlayer(guiPlayers[player.getPlayerId()]);
+    }
+
+    public void rollDice() {
+        Dice dice = new Dice();
+        gui.getUserButtonPressed("", "Kast terningerne");
+        gui.setDice(dice.diceValue(),dice.diceValue());
+    }
+
+
+
 
 }
