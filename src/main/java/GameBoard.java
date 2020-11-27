@@ -16,9 +16,6 @@ public class GameBoard {
         movePlayerAndCastDice();
     }
 
-    private void setupPlayers() {
-    }
-
     public GUI_Field[] customFields() {
         GUI_Field[] fieldsDesign = new GUI_Field[20];
 
@@ -50,6 +47,7 @@ public class GameBoard {
 
         return fieldsDesign;
     }
+
     public GUI_Car vehicleChoice(int playerId) {
         String vehicle = gui.getUserSelection("Vælg din transport", "Bil", "Traktor", "UFO");
         Color color = getVehicleColor(playerId);
@@ -625,9 +623,5 @@ public class GameBoard {
         }
 
     }
-
-
-
-
 
 }
